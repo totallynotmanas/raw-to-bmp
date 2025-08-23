@@ -31,12 +31,3 @@ def raw_to_bmp(input_path, output_path, width, height):
 
     print(f"[SUCCESS] Converted '{os.path.basename(input_path)}' -> '{os.path.basename(output_path)}'")
 
-# ----------------------------
-# USAGE EXAMPLE
-# ----------------------------
-input_file = "fun1.raw"            # Change this to your .raw file
-output_file = "fun1_converted_proper.bmp" # Desired BMP output name
-width =   3888                     # Original image width
-height =  5831                     # Original image height
-
-raw_to_bmp(input_file, output_file, width, height)
