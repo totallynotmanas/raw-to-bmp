@@ -1,5 +1,6 @@
 import raw_to_bmp as RTB
 import tkinter as tk
+from tkinter import ttk
 
 def convert_raw_to_bmp():
     input_file = entry_input.get()
@@ -12,30 +13,72 @@ def convert_raw_to_bmp():
 root = tk.Tk()
 root.title("RAW to BMP Converter")
 
-frame = tk.Frame(root)
-frame.pack(padx=10, pady=10)
+# Make window full screen
+root.state('zoomed')  # For Windows full screen
+# root.attributes('-fullscreen', True)  # Uncomment for true fullscreen (esc to exit)
 
-label_input = tk.Label(frame, text="Input RAW file:")
-label_input.grid(row=0, column=0)
-entry_input = tk.Entry(frame)
-entry_input.grid(row=0, column=1)
+# Dark mode colors
+bg_color = '#23272e'
+fg_color = '#f8f8f2'
+entry_bg = '#282c34'
+button_bg = '#44475a'
+button_fg = '#f8f8f2'
 
-label_output = tk.Label(frame, text="Output BMP file:")
-label_output.grid(row=1, column=0)
-entry_output = tk.Entry(frame)
-entry_output.grid(row=1, column=1)
+root.configure(bg=bg_color)
 
-label_width = tk.Label(frame, text="Width:")
-label_width.grid(row=2, column=0)
-entry_width = tk.Entry(frame)
-entry_width.grid(row=2, column=1)
+style = ttk.Style()
+style.theme_use('clam')
+style.configure('TFrame', background=bg_color)
+style.configure('TLabel', background=bg_color, foreground=fg_color, font=('Segoe UI', 12))
+style.configure('TButton', background=button_bg, foreground=button_fg, font=('Segoe UI', 12, 'bold'))
+# Rounded corners for entries (ttk only, not classic tk.Entry)
+style.element_create('RoundedEntry.border', 'from', 'clam')
+style.layout('RoundedEntry.TEntry', [
+    ('RoundedEntry.border', {'children': [
+        ('Entry.padding', {'children': [
+            ('Entry.textarea', {'sticky': 'nswe'})
+        ], 'sticky': 'nswe'})
+    ], 'sticky': 'nswe'})
+])
+style.configure('RoundedEntry.TEntry',
+    fieldbackground=entry_bg, background=entry_bg, foreground=fg_color, borderwidth=2, relief='flat', padding=8, font=('Segoe UI', 12), bordercolor='#44475a')
 
-label_height = tk.Label(frame, text="Height:")
-label_height.grid(row=3, column=0)
-entry_height = tk.Entry(frame)
-entry_height.grid(row=3, column=1)
+# Center everything using a container frame
+container = ttk.Frame(root, style='TFrame')
+container.pack(expand=True)
 
-button_convert = tk.Button(frame, text="Convert", command=convert_raw_to_bmp)
-button_convert.grid(row=4, columnspan=2)
+# Title at the top
+title_label = ttk.Label(container, text="RAW to BMP Converter", style='TLabel', font=('Segoe UI', 24, 'bold'))
+title_label.pack(pady=(40, 30))
+
+# Form frame centered
+frame = ttk.Frame(container, padding=40, style='TFrame')
+frame.pack(expand=True)
+
+label_input = ttk.Label(frame, text="Input RAW file:", style='TLabel')
+label_input.grid(row=0, column=0, sticky='e', pady=10, padx=10)
+entry_input = ttk.Entry(frame, style='RoundedEntry.TEntry')
+entry_input.grid(row=0, column=1, sticky='ew', pady=10, padx=10)
+
+label_output = ttk.Label(frame, text="Output BMP file:", style='TLabel')
+label_output.grid(row=1, column=0, sticky='e', pady=10, padx=10)
+entry_output = ttk.Entry(frame, style='RoundedEntry.TEntry')
+entry_output.grid(row=1, column=1, sticky='ew', pady=10, padx=10)
+
+label_width = ttk.Label(frame, text="Width:", style='TLabel')
+label_width.grid(row=2, column=0, sticky='e', pady=10, padx=10)
+entry_width = ttk.Entry(frame, style='RoundedEntry.TEntry')
+entry_width.grid(row=2, column=1, sticky='ew', pady=10, padx=10)
+
+label_height = ttk.Label(frame, text="Height:", style='TLabel')
+label_height.grid(row=3, column=0, sticky='e', pady=10, padx=10)
+entry_height = ttk.Entry(frame, style='RoundedEntry.TEntry')
+entry_height.grid(row=3, column=1, sticky='ew', pady=10, padx=10)
+
+button_convert = ttk.Button(frame, text="Convert", command=convert_raw_to_bmp, style='TButton')
+button_convert.grid(row=4, column=0, columnspan=2, pady=20)
+
+# Make columns expand
+frame.columnconfigure(1, weight=1)
 
 root.mainloop()
