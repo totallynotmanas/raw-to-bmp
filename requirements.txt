@@ -1,0 +1,4 @@
+numpy
+Pillow
+# Note: tkinter is part of the standard library on most Python installs and is NOT installed via pip.
+# If you need specific versions pin them like: numpy>=1.24.0
